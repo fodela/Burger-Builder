@@ -41,12 +41,41 @@ class BurgerBuilder extends Component {
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
   };
 
-  removeIngredientHandler = (type) => {};
+  removeIngredientHandler = (type) => {
+    // set count and updated the count
+    const oldCount = this.state.ingredients[type];
+    // handle negative ingredient error
+    if (oldCount <= 0) {
+      return;
+    }
+    const updatedCount = oldCount - 1;
+    // update the ingredient state
+    const updatedIngredients = { ...this.state.ingredients };
+    // update type
+    updatedIngredients[type] = updatedCount;
+    // update the price
+    const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
+    // update state
+    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+  };
   render() {
+    // get info of ingredients whose less button should be disabled in the form {salad:true,meat:false,...} This will enable us use the built in html property disable
+    const disabledInfo = {
+      ...this.state.ingredients,
+    };
+
+    for (let key in disabledInfo) {
+      disabledInfo[key] = disabledInfo[key] <= 0;
+    }
+
     return (
       <Aux>
         <Burger ingredients={this.state.ingredients} />
-        <BuildControls ingredientAdded={this.addIngredientHandler} />
+        <BuildControls
+          ingredientAdded={this.addIngredientHandler}
+          ingredientRemoved={this.removeIngredientHandler}
+          disabled={disabledInfo}
+        />
       </Aux>
     );
   }

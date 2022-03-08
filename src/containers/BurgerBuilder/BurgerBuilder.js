@@ -5,22 +5,30 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 
 // set prices
 const INGREDIENT_PRICES = {
-  salad: 0.5,
   bacon: 0.7,
-  meat: 1.3,
   cheese: 0.4,
+  meat: 1.3,
+  salad: 0.5,
 };
 
 class BurgerBuilder extends Component {
   state = {
     ingredients: {
-      salad: 0,
       bacon: 0,
       cheese: 0,
       meat: 0,
+      salad: 0,
     },
     totalPrice: 4,
+    purchasable: false,
   };
+
+  updatePurchaseState(ingredients) {
+    const sum = Object.keys(ingredients)
+      .map((igkey) => ingredients[igkey])
+      .reduce((sum, el) => sum + el, 0);
+    this.setState({ purchasable: sum > 0 });
+  }
 
   addIngredientHandler = (type) => {
     // set old ingredient count updated count and updatedIngredients variables
@@ -39,6 +47,8 @@ class BurgerBuilder extends Component {
 
     // update the state
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+
+    this.updatePurchaseState(updatedIngredients);
   };
 
   removeIngredientHandler = (type) => {
@@ -57,6 +67,8 @@ class BurgerBuilder extends Component {
     const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
     // update state
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+
+    this.updatePurchaseState(updatedIngredients);
   };
   render() {
     // get info of ingredients whose less button should be disabled in the form {salad:true,meat:false,...} This will enable us use the built in html property disable
@@ -76,6 +88,7 @@ class BurgerBuilder extends Component {
           ingredientRemoved={this.removeIngredientHandler}
           disabled={disabledInfo}
           price={this.state.totalPrice}
+          purchasable={this.state.purchasable}
         />
       </Aux>
     );

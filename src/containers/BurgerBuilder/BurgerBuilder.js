@@ -8,6 +8,7 @@ import axios from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import withRouter from "../../hoc/withRouter/withRouter";
+import { useSearchParams } from "react-router-dom";
 
 // set prices
 const INGREDIENT_PRICES = {
@@ -28,7 +29,7 @@ class BurgerBuilder extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
+    console.log(this.props.router);
     axios
       .get(
         "https://react-burger-builder-cbb72-default-rtdb.firebaseio.com/ingredients.json"
@@ -96,7 +97,6 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    this.props.router.navigate("/checkout");
     this.setState({ loading: true });
     // alert("You continue!");
     //Remember to always recalculate the price and other on the server so that the user does not manipulate the data
@@ -121,6 +121,25 @@ class BurgerBuilder extends Component {
     //   .post("/orders.json", order)
     //   .then((response) => this.setState({ loading: false, purchasing: false }))
     //   .catch((error) => this.setState({ loading: false, purchasing: false }));
+
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      queryParams.push(
+        encodeURIComponent(i) +
+          "=" +
+          encodeURIComponent(this.state.ingredients[i])
+      );
+    }
+
+    const queryString = queryParams.join("&");
+    console.log(queryParams);
+
+    this.props.router.navigate({
+      pathname: "/checkout",
+      search: queryString,
+    });
+
+    console.log(this.props.router.location);
   };
 
   render() {
@@ -175,6 +194,7 @@ class BurgerBuilder extends Component {
         <Modal
           show={this.state.purchasing}
           modalClosed={this.purchaseCancelHandler}
+          ingredients={this.state.ingredients}
         >
           {orderSummary}
         </Modal>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CheckOutSummary from "../../components/CheckOutSummary/CheckOutSummary";
 import withRouter from "../../hoc/withRouter/withRouter";
+
 class CheckOut extends Component {
   state = {
     ingredients: {
@@ -10,6 +11,19 @@ class CheckOut extends Component {
       bacon: 1,
     },
   };
+
+  componentDidMount() {
+    const query = new URLSearchParams(this.props.router.location.search);
+
+    console.log(query);
+    const ingredients = {};
+
+    for (let param of query.entries()) {
+      ingredients[param[0]] = +[param[1]];
+    }
+    this.setState({ ingredients: ingredients });
+  }
+
   checkoutCancelledHandler = () => {
     this.props.router.navigate(-1);
   };
@@ -17,6 +31,7 @@ class CheckOut extends Component {
   checkoutContinuedHandler = () => {
     this.props.router.navigate("/checkout/contact-data", "replace");
   };
+
   render() {
     return (
       <div>

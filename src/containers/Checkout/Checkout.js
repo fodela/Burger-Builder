@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import CheckOutSummary from "../../components/CheckOutSummary/CheckOutSummary";
 import withRouter from "../../hoc/withRouter/withRouter";
-
 class CheckOut extends Component {
   state = {
     ingredients: {
@@ -15,7 +14,6 @@ class CheckOut extends Component {
   componentDidMount() {
     const query = new URLSearchParams(this.props.router.location.search);
 
-    console.log(query);
     const ingredients = {};
 
     for (let param of query.entries()) {

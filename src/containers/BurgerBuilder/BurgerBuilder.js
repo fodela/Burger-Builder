@@ -8,7 +8,6 @@ import axios from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import withRouter from "../../hoc/withRouter/withRouter";
-import { useSearchParams } from "react-router-dom";
 
 // set prices
 const INGREDIENT_PRICES = {

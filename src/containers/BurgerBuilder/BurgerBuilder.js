@@ -98,6 +98,7 @@ class BurgerBuilder extends Component {
   purchaseContinueHandler = () => {
     this.setState({ loading: true });
     // alert("You continue!");
+
     //Remember to always recalculate the price and other on the server so that the user does not manipulate the data
     // create order
 
@@ -131,14 +132,11 @@ class BurgerBuilder extends Component {
     }
 
     const queryString = queryParams.join("&");
-    console.log(queryParams);
 
     this.props.router.navigate({
       pathname: "/checkout",
       search: queryString,
     });
-
-    console.log(this.props.router.location);
   };
 
   render() {

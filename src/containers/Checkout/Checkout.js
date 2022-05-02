@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CheckOutSummary from "../../components/CheckOutSummary/CheckOutSummary";
 import withRouter from "../../hoc/withRouter/withRouter";
+import { Routes, Route } from "react-router-dom";
 class CheckOut extends Component {
   state = {
     ingredients: {
@@ -38,6 +39,10 @@ class CheckOut extends Component {
           checkoutCancelled={this.checkoutCancelledHandler}
           checkoutContinued={this.checkoutContinuedHandler}
         />
+
+        <Routes>
+          <Route path={this.props.router.location.pathname} />
+        </Routes>
       </div>
     );
   }
